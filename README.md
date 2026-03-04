@@ -1,6 +1,6 @@
-# 🔥 TorchCode — PyTorch 手写算子训练场
+# TorchCode
 
-A self-hosted Jupyter-based environment for practicing PyTorch operator implementations. Like LeetCode, but in a real notebook.
+A self-hosted Jupyter-based environment for practicing PyTorch operator implementations from scratch. Like LeetCode, but for tensors — in a real notebook.
 
 ## Quick Start
 
@@ -9,6 +9,8 @@ make run
 ```
 
 Open **http://localhost:8888** — that's it.
+
+Works with both Docker and Podman (auto-detected).
 
 ## How It Works
 
@@ -20,7 +22,7 @@ Each problem has **two** notebooks:
 | `01_relu_solution.ipynb` | Reference solution — check when stuck |
 
 **Blank templates reset on every `make run`** so you always start fresh.
-If you want to keep your code, save it under a different filename.
+If you want to keep your work, save it under a different filename.
 
 ### Workflow
 
@@ -35,39 +37,42 @@ If you want to keep your code, save it under a different filename.
 ## Problems
 
 ### Basics
-| # | Problem | Difficulty |
-|---|---------|-----------|
-| 1 | Implement ReLU | 🟢 Easy |
-| 2 | Implement Softmax | 🟢 Easy |
-| 3 | Simple Linear Layer | 🟡 Medium |
-| 4 | Implement LayerNorm | 🟡 Medium |
-| 7 | Implement BatchNorm | 🟡 Medium |
-| 8 | Implement RMSNorm | 🟡 Medium |
+
+| # | Problem | Task ID | Difficulty |
+|---|---------|---------|------------|
+| 1 | Implement ReLU | `relu` | Easy |
+| 2 | Implement Softmax | `softmax` | Easy |
+| 3 | Simple Linear Layer | `linear` | Medium |
+| 4 | Implement LayerNorm | `layernorm` | Medium |
+| 7 | Implement BatchNorm | `batchnorm` | Medium |
+| 8 | Implement RMSNorm | `rmsnorm` | Medium |
 
 ### Attention Mechanisms
-| # | Problem | Difficulty |
-|---|---------|-----------|
-| 5 | Softmax Attention | 🔴 Hard |
-| 9 | Causal Self-Attention | 🔴 Hard |
-| 6 | Multi-Head Attention | 🔴 Hard |
-| 10 | Grouped Query Attention | 🔴 Hard |
-| 11 | Sliding Window Attention | 🔴 Hard |
-| 12 | Linear Self-Attention | 🔴 Hard |
+
+| # | Problem | Task ID | Difficulty |
+|---|---------|---------|------------|
+| 5 | Scaled Dot-Product Attention | `attention` | Hard |
+| 6 | Multi-Head Attention | `mha` | Hard |
+| 9 | Causal Self-Attention | `causal_attention` | Hard |
+| 10 | Grouped Query Attention | `gqa` | Hard |
+| 11 | Sliding Window Attention | `sliding_window` | Hard |
+| 12 | Linear Self-Attention | `linear_attention` | Hard |
 
 ### Full Architecture
-| # | Problem | Difficulty |
-|---|---------|-----------|
-| 13 | GPT-2 Transformer Block | 🔴 Hard |
+
+| # | Problem | Task ID | Difficulty |
+|---|---------|---------|------------|
+| 13 | GPT-2 Transformer Block | `gpt2_block` | Hard |
 
 ## Commands
 
 ```bash
 make run    # Build & start (http://localhost:8888)
 make stop   # Stop the container
-make clean  # Stop + clear progress
+make clean  # Stop + remove volumes + clear progress
 ```
 
-## In-Notebook Commands
+## In-Notebook API
 
 ```python
 from torch_judge import check, hint, status
@@ -81,23 +86,33 @@ hint("causal_attention")    # Get a hint
 
 ```
 ┌──────────────────────────────────────────┐
-│           Docker Container               │
+│           Docker / Podman Container      │
 │                                          │
 │  JupyterLab (:8888)                     │
 │    ├── templates/  (baked in image)      │
 │    ├── solutions/  (baked in image)      │
 │    ├── torch_judge/ (judge engine)       │
-│    └── PyTorch (CPU)                     │
+│    └── PyTorch (CPU), NumPy             │
 │                                          │
 │  entrypoint.sh:                          │
 │    1. Copy templates → notebooks/ (reset)│
 │    2. Copy solutions → notebooks/        │
-│    3. Start JupyterLab                   │
+│    3. Start JupyterLab (no auth)         │
 │                                          │
 │  Volumes:                                │
-│    ./notebooks  (working dir, persists)  │
-│    ./data       (progress.json)          │
+│    ./notebooks    → working directory    │
+│    ./torch_judge  → judge engine (live)  │
+│    ./data         → progress.json        │
 └──────────────────────────────────────────┘
 ```
 
 Single container. Single port. No database. No frontend framework.
+
+## Requirements
+
+- Docker or Podman with Compose support
+- No GPU needed — runs on CPU
+
+## License
+
+MIT
