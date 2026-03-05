@@ -7,7 +7,7 @@ import { Dialog, showDialog, ToolbarButton } from '@jupyterlab/apputils';
 import { LabIcon, refreshIcon } from '@jupyterlab/ui-components';
 
 const GITHUB_REPO = 'duoan/TorchCode';
-const GITHUB_BRANCH = 'main';
+const GITHUB_BRANCH = 'master';
 const TEMPLATES_BACKUP = '_original_templates';
 
 const colabIcon = new LabIcon({

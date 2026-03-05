@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 REPO = "duoan/TorchCode"
-BRANCH = "main"
+BRANCH = "master"
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "templates"
 BADGE_IMG = "https://colab.research.google.com/assets/colab-badge.svg"
 
